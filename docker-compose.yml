@@ -1,0 +1,51 @@
+version: '3'
+services:
+  serve:
+    build:
+      context: docker/dev/node
+      args: 
+        - IMAGE=$IMAGE_NODE
+    container_name: lemts-serve
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_HOST=$MYSQL_HOST
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_CONNECTION_LIMIT=$MYSQL_CONNECTION_LIMIT
+    volumes:
+      - ./app:/app
+    depends_on:
+      - db
+    ports:
+      - "80:8080"
+    command: npm run start
+
+  db:
+    build:
+      context: docker/dev/mysql
+    container_name: lemts-db
+    user: "$UID:$GID"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+    ports:
+      - '3306:3306'
+    volumes: 
+      - ./docker/dev/mysql/data:/var/lib/mysql
+
+  phpmyadmin:
+    build:
+      context: docker/dev/phpmyadmin
+    restart: always
+    container_name: lemts-phpmyadmin
+    ports:
+      - '8080:80'
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=$MYSQL_HOST
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+
+      
