@@ -1,15 +1,19 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
+import path from "path";
+import  * as bodyParser  from "body-parser";
+import { default as helmet } from "helmet";
+import { default as cors } from "cors";
 
-import { indexRouter } from './components/index';
-import { usersRouter } from './components/users';
+import { router } from "./routes";
 
 const app: express.Application = express();
 
-app.use(express.static(path.join(__dirname, '../../public')))
+app.use(express.static(path.join(__dirname, "../../public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(helmet());
+app.use(cors());
+app.use(bodyParser.json());
 
-app.listen(8080)
+app.use("/", router);
 
+app.listen(8080);

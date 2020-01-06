@@ -1,1 +1,1 @@
-export * from './indexRouter';
+export * from './router';

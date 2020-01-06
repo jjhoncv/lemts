@@ -4,8 +4,10 @@ export const getDatabaseConfig = () => ({
   password: process.env.MYSQL_ROOT_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   connectionLimit: Number(process.env.MYSQL_CONNECTION_LIMIT)
-})
+});
 export const getServerConfig = () => ({
   port: 8080
 });
 
+export const jwtSecret = "@QEGTUI";
+export const jwtExpires = "2h";

@@ -1,0 +1,70 @@
+[/user/auth] **
+
+/user/auth/register : get  [ checkJwt, checkRole ]
+/user/auth/register : post [ checkJwt, checkRole, validator ]
+    userService.createUser(
+        username,
+        password,
+        email
+    )
+
+/user/auth/login    : get  []
+/user/auth/login    : post [validator]
+    userService.login(
+        username,
+        password
+    )
+
+[/user] **
+
+/user/${id}          : get [ checkJwt, checkRole ]
+    userService.getUserById(
+        idUser
+    )
+
+/user                : get [checkJwt, checkRole]
+    userService.getAll()
+
+
+[/user/me] **
+
+/user/me              : get [checkJwt, checkRole]
+    userService.getUserById(
+        idFromJwt
+    )
+
+/user/me              : path [checkJwt, checkRole, validator]
+    userService.updateUser(
+        idFromJwt,
+        req.body.name,
+        req.body.email,
+        req.body.password
+    )
+
+[/user/${id}/section] **
+
+/user/${id}/section            : get [ checkJwt, checkRole ]
+    sectionService.getAll()
+
+/user/${id}/section            : post [ checkJwt, checkRole, validator ]
+    sectionService.createSections(
+        id,
+        [sectionIds]
+    )
+
+/user/${id}/section            : delete [ checkJwt, checkRole, validator ]
+    sectionService.deleteSections(
+        id,
+        [sectionIds]
+    )
+
+
+
+***********
+checkJwt:
+- Valida si el jwt es correcto
+checkrole:
+- Obtiene el id del usuario logueado desde el jwt
+- valida si el rol del usuario tiene el privilegio de
+  hacer la accion que se requiere.
+
