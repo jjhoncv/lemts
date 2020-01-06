@@ -1,7 +1,7 @@
 import { User } from "../entity/user";
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import { jwtSecret, jwtExpires } from "../../../configs";
+import { jwtSecret, jwtExpires } from "../../../config";
 import { validate } from "class-validator";
 
 export class userAuthController {

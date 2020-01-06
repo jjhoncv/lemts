@@ -1,9 +1,9 @@
 module.exports = {
   type: 'mysql',
-  host: process.env.DB_HOST || '127.0.0.1',
-  username: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'scout',
-  database: process.env.DB_NAME || 'test_db',
+  host: process.env.MYSQL_HOST || '127.0.0.1',
+  username: process.env.MYSQL_USER || 'root',
+  password: process.env.MYSQL_ROOT_PASSWORD || 'scout',
+  database: process.env.MYSQL_DATABASE || 'test_db',
   charset: 'utf8',
   driver: 'mysql',
   synchronize: process.env.NODE_ENV !== 'production',
