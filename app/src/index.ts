@@ -18,34 +18,37 @@ const app: express.Application = express();
 // app.use(express.static(path.join(__dirname, "../../public")));
 
 createConnection().then(async connection => {
-    logger.info('database connection created');
-    let role = new Role();
-    role.name = 'rol admin';
+    // logger.info('database connection created');
+    // let role = new Role();
+    // role.name = 'rol admin';
 
-    let user = new User();
-    user.name = 'jhonnatan'
-    user.surname = 'castro';
-    user.email = 'jjhoncv@gmail.com';
-    user.login = 'jjhoncv'
-    user.password = '123456';
-    user.photo = 'a.jpg';
-    user.role = role;
+    // let user = new User();
+    // user.name = 'jhonnatan'
+    // user.surname = 'castro';
+    // user.email = 'jjhoncv@gmail.com';
+    // user.username = 'jjhoncv'
+    // user.password = '123456';
+    // user.photo = 'a.jpg';
+    // user.role = role;
 
-    let roleRepository = connection.getRepository(Role);
-    let userRepository = connection.getRepository(User);
+    // let roleRepository = connection.getRepository(Role);
+    // let userRepository = connection.getRepository(User);
 
-    await roleRepository.save(role);
-    await userRepository.save(user);
+    // await roleRepository.save(role);
+    // await userRepository.save(user);
 
-    console.log("user and role is saved");
+    // console.log("user and role is saved");
 
+    // app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+
+    app.use("/", router);
 
 }).catch(error => console.log(error));
 
 // app.use(helmet());
 // app.use(cors());
-// app.use(bodyParser.json());
-
-// app.use("/", router);
 
 app.listen(8080);

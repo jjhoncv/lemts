@@ -1,6 +1,6 @@
 import { sql } from "../../../helpers/mysql";
 import { SQLtoUserHydrate, UserToSQLHydrate } from "../hydrate";
-import * as bcrypt from "bcryptjs";
+import * as bcrypt from "bcrypt";
 import { Length, IsNotEmpty } from "class-validator";
 
 export class Role {

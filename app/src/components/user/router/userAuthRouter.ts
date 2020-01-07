@@ -8,9 +8,9 @@ const router: Router = Router();
 router.post("/login", userAuthController.login);
 
 // Register route
-router.post("/login", userAuthController.register);
+router.post("/register", userAuthController.register);
 
 // Change my password
-router.post("/change-password", [checkJwt], userAuthController.changePassword);
+// router.post("/change-password", [checkJwt], userAuthController.changePassword);
 
-export const authRouter: Router = router;
+export const userAuthRouter: Router = router;

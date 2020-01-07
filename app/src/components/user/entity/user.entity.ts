@@ -1,5 +1,7 @@
-import { Entity, Column, OneToOne, JoinColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn, PrimaryGeneratedColumn, Unique, ManyToMany, JoinTable } from "typeorm";
 import { Role } from './role.entity'
+import { Section } from './section.entity'
+
 
 @Entity()
 export class User {
@@ -14,11 +16,11 @@ export class User {
     surname: string;
 
     @Column()
-    @Unique(['email'])
     email: string;
 
     @Column()
-    login: string;
+    @Unique(['username'])
+    username: string;
 
     @Column()
     password: string;
@@ -26,8 +28,8 @@ export class User {
     @Column()
     photo: string;
 
-    @Column()
-    createdAt: string;
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    lastLogin: string;
 
     @Column({ default: true })
     reading: boolean;
@@ -38,4 +40,8 @@ export class User {
     @OneToOne(type => Role)
     @JoinColumn()
     role: Role;
+
+    @ManyToMany(type => Section, section => section.users)
+    @JoinTable()
+    sections: Section[];
 }
