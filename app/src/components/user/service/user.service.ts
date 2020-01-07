@@ -3,6 +3,7 @@ import { User } from './../entity/user.entity';
 import { Role } from './../entity/role.entity';
 
 import { verifyHash, generateHash } from './../utils/encryptions'
+import { IError } from '../../../errors/IError';
 
 const getUserByUsername = async (username: string, getHash: boolean = false) => {
     try {
@@ -37,7 +38,6 @@ export const createUser = async (params) => {
 
 export const loginUser = async (username: string, password: string) => {
     // Get user from database
-
     const user = await getUserByUsername(username);
     if (user) {
         if (await verifyHash(password, user.password)) {
@@ -47,6 +47,51 @@ export const loginUser = async (username: string, password: string) => {
         }
     }
     return null
+}
+
+export const changePassword = async (userId, oldPassword, newPassword) => {
+
+    //Get parameters from the body
+    if (!(oldPassword && newPassword)) {
+        throw new IError({ code: 400, msg: 'fail passwords not set' });
+    }
+    const user = await getRepository(User).findOne({ id: userId });
+
+    if (user) {
+        if (await verifyHash(oldPassword, user.password)) {
+            user.password = await generateHash(newPassword, 10);
+            updateUser(user);
+            return user;
+        }
+    }
+
+    // //Check if old password matchs
+    // if (!User.checkIfUnencryptedPasswordIsValid(oldPassword, user.password)) {
+    //     res.status(401).send('fail validation encript');
+    //     return;
+    // }
+
+    // //Get user from the database
+    // let user: User;
+    // try {
+    //     // user = await userRepository.findOneOrFail(id);
+    //     user = await User.init(userId);
+    // } catch (id) {
+    //     res.status(401).send('fail pidiendo usuario');
+    // }
 
 
+    // //Validate de model (password length)
+    // user.password = newPassword;
+    // const errors = await validate(user);
+    // if (errors.length > 0) {
+    //     res.status(400).send(errors);
+    //     return;
+    // }
+    // //Hash the new password and save
+    // user.hashPassword();
+    // User.update(user);
+
+    // res.status(204).send('all ok');
+    // };
 }

@@ -11,6 +11,6 @@ router.post("/login", userAuthController.login);
 router.post("/register", userAuthController.register);
 
 // Change my password
-// router.post("/change-password", [checkJwt], userAuthController.changePassword);
+router.post("/change-password", [checkJwt], userAuthController.changePassword);
 
 export const userAuthRouter: Router = router;

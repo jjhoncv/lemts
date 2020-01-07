@@ -17,22 +17,27 @@ export class userSectionController {
 
   static add = async (req: Request, res: Response) => {
     let { id } = req.params;
-    let { sectionsIds } = req.body;
-
-    // console.log('controller', sectionsIds)
-    
-    // console.log('controller', sectionsIds)
+    let sectionsIds: number[] = (req.body.sectionsIds);
 
     const sections = await sectionService.addSectionByUser(id, sectionsIds);
 
-    // if (sections) {
-    //   res.send('');
-    // } else {
-    //   res.status(401).send('invalid credentials');
-    // }
+    if (sections) {
+      res.send('add sections success!!');
+    } else {
+      res.status(401).send('invalid credentials');
+    }
   };
 
   static remove = async (req: Request, res: Response) => {
+    let { id } = req.params;
+    let { sectionsIds } = req.body;
 
+    const sections = await sectionService.removeSectionByUser(id, sectionsIds);
+
+    if (sections) {
+      res.send('remove sections success!!');
+    } else {
+      res.status(401).send('invalid credentials');
+    }
   };
 }

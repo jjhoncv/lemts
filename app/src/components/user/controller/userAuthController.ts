@@ -38,7 +38,29 @@ export class userAuthController {
     }
   };
 
-  // static changePassword = async (req: Request, res: Response) => {
+  static changePassword = async (req: Request, res: Response) => {
+    const { oldPassword, newPassword } = req.body;
+    const { userId } = res.locals.jwtPayload;
+
+    console.log('controller', oldPassword, newPassword, userId)
+
+    let user: User;
+
+    try {
+      user = await userService.changePassword(userId, oldPassword, newPassword);
+    } catch (e) {
+      res.status(e.code).send(e.msg)
+    }
+
+    if (user) {
+      res.status(204).send('all ok')
+    }
+
+    // }
+    // else {
+    //   res.status(401).send('fail change password');
+    // }
+  }
   //   //Get ID from JWT
   //   const id = res.locals.jwtPayload.userId;
 

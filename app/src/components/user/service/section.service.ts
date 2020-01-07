@@ -2,21 +2,37 @@ import { getRepository } from 'typeorm';
 import { User } from '../entity/user.entity';
 import { Section } from '../entity/section.entity';
 
-export const getSectionByUser = async (idUser) => {
-    return await getRepository(User).findOne(idUser, { relations: ["sections"] })
+export const getSectionByUser = async (idUser: any) => {
+    const user = await getRepository(User).findOne(idUser, { relations: ["sections"] })
+    return user.sections;
 }
 
-export const addSectionByUser = async (idUser, sectionsIds) => {
+export const addSectionByUser = async (idUser: any, sectionsIds: any[]) => {
 
-    let sections = sectionsIds.map(idSection => {
-        let section = new Section()
+    const sections = sectionsIds.map(idSection => {
+        const section = new Section()
         section.id = idSection;
         return section;
     })
 
-    let user = new User();
+    const userRepository = getRepository(User);
+
+    const user = await userRepository.findOne(idUser);
     user.sections = sections;
 
-    let userRepository = getRepository(User);
     return await userRepository.save(user);
 }
+
+export const removeSectionByUser = async (idUser: any, sectionsIds: any[]) => {
+
+    const sectionsAll = await getSectionByUser(idUser);
+    const sectionsfilter = sectionsAll.filter(section => !sectionsIds.includes(section.id))
+    const userRepository = getRepository(User);
+
+    const user = await userRepository.findOne(idUser);
+    user.sections = sectionsfilter;
+
+    return await userRepository.save(user);
+}
+
+

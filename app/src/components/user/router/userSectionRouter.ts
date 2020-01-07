@@ -5,23 +5,6 @@ import { userSectionController } from "../controller";
 
 const router = Router();
 
-
-// /user/${id}/section            : get [ checkJwt, checkRole ]
-//     sectionService.getAll()
-
-// /user/${id}/section            : post [ checkJwt, checkRole, validator ]
-//     sectionService.createSections(
-//         id,
-//         [sectionIds]
-//     )
-
-// /user/${id}/section            : delete [ checkJwt, checkRole, validator ]
-//     sectionService.deleteSections(
-//         id,
-//         [sectionIds]
-//     )
-
-
 // get all sections by user
 router.get("/:id([0-9]+)/section", [checkJwt, checkRole(["admin"])], userSectionController.list);
 
