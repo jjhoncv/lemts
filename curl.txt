@@ -4,8 +4,13 @@ curl -d '{"username":"jjhoncv", "password":"123456"}' -H "Content-Type: applicat
 register
 curl -d '{"username":"jjhoncv", "password":"123456", "name":"jhonnatan", "surname":"castro", "email":"jjhoncv@gmail.com", "photo":"a.jpg", "role": "1"}' -H "Content-Type: application/json" -X POST http://localhost/user/auth/register
 
+token auth es sin %
+
 section list by user
 curl -H "Content-Type: application/json" -H "auth: " -X GET http://localhost/user/3/section
 
 section add by user
 curl -d '{"sectionsIds":[1, 4]}' -H "Content-Type: application/json" -H "auth: " -X POST http://localhost/user/1/section
+
+change-password
+curl -d '{"newPassword":"jjhoncv", "oldPassword":"123456"}' -H "Content-Type: application/json" -H "auth: " -X POST http://localhost/user/auth/change-passwordcurl -d '{"newPassword":"jjhoncv", "oldPassword":"123456"}' -H "Content-Type: application/json" -H "auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiamhvbm5hdGFuIiwiaWF0IjoxNTc4NTQxMTg0LCJleHAiOjE1Nzg1NDgzODR9.PDeSug7pud0KB8aSvaAUZue3PfZxjdFR4GcqFl500so" -X POST http://localhost/user/auth/change-passwordcurl -d '{"newPassword":"jjhoncv", "oldPassword":"123456"}' -H "Content-Type: application/json" -H "auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiamhvbm5hdGFuIiwiaWF0IjoxNTc4NTQxMTg0LCJleHAiOjE1Nzg1NDgzODR9.PDeSug7pud0KB8aSvaAUZue3PfZxjdFR4GcqFl500so" -X POST http://localhost/user/auth/change-passwordcurl -d '{"newPassword":"jjhoncv", "oldPassword":"123456"}' -H "Content-Type: application/json" -H "auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiamhvbm5hdGFuIiwiaWF0IjoxNTc4NTQxMTg0LCJleHAiOjE1Nzg1NDgzODR9.PDeSug7pud0KB8aSvaAUZue3PfZxjdFR4GcqFl500so" -X POST http://localhost/user/auth/change-passwordcurl -d '{"newPassword":"jjhoncv", "oldPassword":"123456"}' -H "Content-Type: application/json" -H "auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiamhvbm5hdGFuIiwiaWF0IjoxNTc4NTQxMTg0LCJleHAiOjE1Nzg1NDgzODR9.PDeSug7pud0KB8aSvaAUZue3PfZxjdFR4GcqFl500so" -X POST http://localhost/user/auth/change-password

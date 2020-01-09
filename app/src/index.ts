@@ -1,24 +1,24 @@
 import express from "express";
-import 'reflect-metadata';
+import "reflect-metadata";
 import path from "path";
 import * as bodyParser from "body-parser";
 import { default as helmet } from "helmet";
 import { default as cors } from "cors";
-import { createConnection } from 'typeorm';
-import logger from './config/logger'
+import { createConnection } from "typeorm";
+import logger from "./config/logger";
 
 import { router } from "./routes";
 
-import { User } from './components/user/entity/user.entity'
-import { Role } from './components/user/entity/role.entity'
-import { handleError } from './errors/handleError'
-
+import { User } from "./components/user/entity/user.entity";
+import { Role } from "./components/user/entity/role.entity";
+import { handleError } from "./errors/handleError";
 
 const app: express.Application = express();
 
 // app.use(express.static(path.join(__dirname, "../../public")));
 
-createConnection().then(async connection => {
+createConnection()
+  .then(async connection => {
     // logger.info('database connection created');
     // let role = new Role();
     // role.name = 'rol admin';
@@ -46,10 +46,10 @@ createConnection().then(async connection => {
 
     app.use("/", router);
     app.use((err, req, res, next) => {
-        handleError(err, res)
+      handleError(err, res);
     });
-
-}).catch(error => console.log(error));
+  })
+  .catch(error => console.log(error));
 
 // app.use(helmet());
 // app.use(cors());

@@ -1,16 +1,21 @@
 import { Router } from "express";
 import { userAuthController } from "../controller";
 import { checkJwt } from "../middelware";
+import { asyncHandler } from "../../../utils";
 
 const router: Router = Router();
 
 // Login route
-router.post("/login", userAuthController.login);
+router.post("/login", asyncHandler(userAuthController.login));
 
 // Register route
-router.post("/register", userAuthController.register);
+router.post("/register", asyncHandler(userAuthController.register));
 
 // Change my password
-router.post("/change-password", [checkJwt], userAuthController.changePassword);
+router.post(
+  "/change-password",
+  [checkJwt],
+  asyncHandler(userAuthController.changePassword)
+);
 
 export const userAuthRouter: Router = router;
