@@ -1,5 +1,5 @@
 import { User } from "../entity/user.entity";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import { validate } from "class-validator";
 import * as userService from './../service/user.service'
@@ -7,97 +7,51 @@ import { generateJWT } from './../utils/encryptions'
 
 export class userAuthController {
 
-  static register = async (req: Request, res: Response) => {
+  static register = async (req: Request, res: Response, next: NextFunction) => {
     let { username, name, surname, email, photo, role, password } = req.body;
     let user: User;
+
     try {
       user = await userService.createUser({ username, name, surname, email, photo, role, password });
-    } catch (e) {
-      res.status(401).send('username exists');
+    } catch (error) {
+      next(error)
     }
-    if (user) {
-      const token = generateJWT(user);
-      res.send(token);
-    } else {
-      res.status(401).send('invalid credentials');
-    }
+
+    const token = generateJWT(user);
+    res.status(200).send(token);
 
   }
 
-  static login = async (req: Request, res: Response) => {
+  static login = async (req: Request, res: Response, next: NextFunction) => {
     //Check if username and password are set
-
     let { username, password } = req.body;
-    const user = await userService.loginUser(username, password);
+    let user: User;
 
-    if (user) {
-      const token = generateJWT(user);
-      res.send(token);
-    } else {
-      res.status(401).send('invalid credentials');
+    try {
+      user = await userService.loginUser(username, password);
+    } catch (error) {
+      next(error)
     }
+
+    const token = generateJWT(user);
+    res.status(200).send(token);
+
   };
 
-  static changePassword = async (req: Request, res: Response) => {
+  static changePassword = async (req: Request, res: Response, next: NextFunction) => {
     const { oldPassword, newPassword } = req.body;
     const { userId } = res.locals.jwtPayload;
-
-    console.log('controller', oldPassword, newPassword, userId)
-
     let user: User;
 
     try {
       user = await userService.changePassword(userId, oldPassword, newPassword);
-    } catch (e) {
-      res.status(e.code).send(e.msg)
+    } catch (error) {
+      next(error)
     }
 
     if (user) {
-      res.status(204).send('all ok')
+      res.status(200).send('password changed')
     }
 
-    // }
-    // else {
-    //   res.status(401).send('fail change password');
-    // }
   }
-  //   //Get ID from JWT
-  //   const id = res.locals.jwtPayload.userId;
-
-  //   console.log('id', id)
-
-  //   //Get parameters from the body
-  //   const { oldPassword, newPassword } = req.body;
-  //   if (!(oldPassword && newPassword)) {
-  //     res.status(400).send('fail passwords iguales');
-  //   }
-
-  //   //Get user from the database
-  //   let user: User;
-  //   try {
-  //     // user = await userRepository.findOneOrFail(id);
-  //     user = await User.init(id);
-  //   } catch (id) {
-  //     res.status(401).send('fail pidiendo usuario');
-  //   }
-
-  //   //Check if old password matchs
-  //   if (!User.checkIfUnencryptedPasswordIsValid(oldPassword, user.password)) {
-  //     res.status(401).send('fail validation encript');
-  //     return;
-  //   }
-
-  //   //Validate de model (password length)
-  //   user.password = newPassword;
-  //   const errors = await validate(user);
-  //   if (errors.length > 0) {
-  //     res.status(400).send(errors);
-  //     return;
-  //   }
-  //   //Hash the new password and save
-  //   user.hashPassword();
-  //   User.update(user);
-
-  //   res.status(204).send('all ok');
-  // };
 }

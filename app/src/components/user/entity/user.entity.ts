@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, JoinColumn, PrimaryGeneratedColumn, Unique, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, ManyToMany, JoinTable } from "typeorm";
 import { Role } from './role.entity'
 import { Section } from './section.entity'
 
@@ -37,11 +37,11 @@ export class User {
     @Column({ default: true })
     writing: boolean;
 
-    @OneToOne(type => Role)
+    @ManyToOne(type => Role)
     @JoinColumn()
     role: Role;
 
-    @ManyToMany(type => Section, section => section.users)
+    @ManyToMany(type => Section)
     @JoinTable()
     sections: Section[];
 }

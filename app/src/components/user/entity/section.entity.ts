@@ -19,7 +19,7 @@ export class Section {
     @ManyToOne(type => Module, module => module.sections)
     module: Module;
 
-    @ManyToMany(type => User, user => user.sections)
-    @JoinTable()
-    users: User[];
+    // @ManyToMany(type => User, user => user.sections)
+    // @JoinTable()
+    // users: User[];
 }

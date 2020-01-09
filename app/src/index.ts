@@ -11,6 +11,7 @@ import { router } from "./routes";
 
 import { User } from './components/user/entity/user.entity'
 import { Role } from './components/user/entity/role.entity'
+import { handleError } from './errors/handleError'
 
 
 const app: express.Application = express();
@@ -40,11 +41,13 @@ createConnection().then(async connection => {
     // console.log("user and role is saved");
 
     // app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-
     app.use("/", router);
+    app.use((err, req, res, next) => {
+        handleError(err, res)
+    });
 
 }).catch(error => console.log(error));
 
