@@ -32,7 +32,7 @@ export const loginUser = async ({ username, password }) => {
     user.lastLogin = new Date().getTime().toString();
     await getRepository(User).save(user);
   } else {
-    throw new ErrorHandler(404, "password not is valid");
+    throw new ErrorHandler(404, 'password verification failed');
   }
   return user;
 };

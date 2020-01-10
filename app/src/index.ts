@@ -41,13 +41,12 @@ createConnection()
     // console.log("user and role is saved");
 
     // app.use(bodyParser.urlencoded({ extended: true }));
+    
     app.use(express.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use("/", router);
-    app.use((err, req, res, next) => {
-      handleError(err, res);
-    });
+    app.use(handleError);
   })
   .catch(error => console.log(error));
 

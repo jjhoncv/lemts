@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Response } from "express";
 
 export class ErrorHandler extends Error {
   public statusCode: number;
@@ -11,18 +11,17 @@ export class ErrorHandler extends Error {
 
 interface IError {
   statusCode: number;
-  message: string;
+  message: string | object;
   name: string;
 }
 
-export const handleError = (err: IError, res: Response) => {
-  // console.log("err", err);
+
+export const handleError = (err: IError, req, res: Response, next) => {
 
   const { statusCode, message, name } = {
     ...err,
     statusCode: err.statusCode || 400
   };
-  // const
   res.status(statusCode).json({
     status: "error",
     statusCode: statusCode,

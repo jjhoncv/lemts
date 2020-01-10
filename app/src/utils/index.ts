@@ -1,18 +1,18 @@
-export const asyncHandler = dispacthHandler => {
-  return function(req, res, next) {
-    dispacthHandler(req, res, next)
-      .then(q => {
-        // console.log("res", res);
-        res.json({
-          status: res.statusCode,
-          data: res.data,
-          message: res.message
-        });
-        // console.log(res.data);
-        // console.log(res.statusCode);
-        // res['data'] = 'asdasdsdasd'
-        // console.log("g", g);
-      })
+import { IResponse } from "../components/user/types";
+
+const hydrateResponse = (res: IResponse) => ({
+  status: res.statusCode === 200 ? 'success' : '',
+  statusCode: res.statusCode,
+  data: res.data,
+  message: res.message
+})
+
+export const asyncHandler = fn =>
+  (req, res: any, next) => {
+    Promise.resolve(fn(req, res, next)).then(() => {
+      const response = hydrateResponse(res);
+      res.json({ ...response });
+    })
       .catch(next);
   };
-};
+
