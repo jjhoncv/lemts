@@ -4,10 +4,15 @@ import { checkJwt } from "../middelware";
 import { asyncHandler } from "../../../utils";
 import { checkLogin } from "../middelware/checkLogin";
 
+
 const router: Router = Router();
 
 // Login route
-router.post("/login", checkLogin, asyncHandler(userAuthController.login));
+router.post(
+  "/login",
+  [checkLogin],
+  asyncHandler(userAuthController.login)
+);
 
 // Register route
 router.post("/register", asyncHandler(userAuthController.register));
