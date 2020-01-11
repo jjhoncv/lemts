@@ -19,15 +19,13 @@ export const asyncHandler = fn => (req, res: any, next) => {
 };
 
 // can be reused by many routes
-export const validate = validations => {
-  return async (req, res, next) => {
-    await Promise.all(validations.map(validation => validation.run(req)));
+export const validate = validations => async (req, res, next) => {
+  await Promise.all(validations.map(validation => validation.run(req)));
 
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-      return next();
-    }
-
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    return next();
+  } else {
     throw new ErrorHandler(422, { errors: errors.array() });
-  };
+  }
 };
