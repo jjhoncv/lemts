@@ -1,25 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import { User } from './user.entity'
-import { Module } from './module.entity'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn
+} from "typeorm";
+
+import { Module } from "./module.entity";
 
 @Entity()
 export class Section {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    url: string;
+  @Column()
+  url: string;
 
-    @Column()
-    status: boolean;
+  @Column()
+  status: boolean;
 
-    @ManyToOne(type => Module, module => module.sections)
-    module: Module;
-
-    // @ManyToMany(type => User, user => user.sections)
-    // @JoinTable()
-    // users: User[];
+  @ManyToOne(type => Module)
+  @JoinColumn()
+  module: Module;
 }

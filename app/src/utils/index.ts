@@ -1,5 +1,5 @@
-import { IResponse } from "../components/user/types";
-import { validationResult } from "express-validator/src/validation-result";
+import { IResponse } from "../components/user/interface";
+import { validationResult } from "express-validator";
 import { ErrorHandler } from "../errors/handleError";
 
 const hydrateResponse = (res: IResponse) => ({
@@ -22,10 +22,18 @@ export const asyncHandler = fn => (req, res: any, next) => {
 export const validate = validations => async (req, res, next) => {
   await Promise.all(validations.map(validation => validation.run(req)));
 
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    return next();
-  } else {
-    throw new ErrorHandler(422, { errors: errors.array() });
+  const errorFormatter = ({ location, msg, param, value, nestedErrors }) => ({
+    [param]: msg
+  });
+
+  const errors = validationResult(req)
+    .formatWith(errorFormatter)
+    .array();
+  let failMsg = null;
+
+  if (errors && errors.length) {
+    failMsg = new ErrorHandler(422, { data: errors });
   }
+
+  next(failMsg);
 };

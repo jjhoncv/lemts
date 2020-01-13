@@ -1,9 +1,9 @@
 import { Request } from "express";
-import * as userService from "./../service/user.service";
-import { generateJWT } from "./../utils/encryptions";
-import { IResponse } from "../types";
+import * as userService from "../service/user.service";
+import { generateJWT } from "../utils/encryptions";
+import { IResponse } from "../interface";
 
-export class userAuthController {
+export class userController {
   static register = async (req: Request, res: IResponse) => {
     const params = req.body;
     const user = await userService.createUser(params);

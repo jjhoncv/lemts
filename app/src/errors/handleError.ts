@@ -1,31 +1,29 @@
 import { Response } from "express";
 
+interface IError {
+  statusCode: number;
+  msg: string;
+  data: object;
+  name: string;
+  status: string;
+}
+
 export class ErrorHandler extends Error {
   public statusCode: number;
-  constructor(statusCode, message) {
+  public data: object;
+  public msg: string;
+  public status: string;
+
+  constructor(statusCode: number, arg: { msg?: any; data?: any }) {
     super();
+    this.status = "error";
     this.statusCode = statusCode;
-    this.message = message;
+    this.msg = arg.msg;
+    this.data = arg.data;
   }
 }
 
-interface IError {
-  statusCode: number;
-  message: string | object;
-  name: string;
-}
-
-
 export const handleError = (err: IError, req, res: Response, next) => {
-
-  const { statusCode, message, name } = {
-    ...err,
-    statusCode: err.statusCode || 400
-  };
-  res.status(statusCode).json({
-    status: "error",
-    statusCode: statusCode,
-    name,
-    message
-  });
+  const { statusCode } = err;
+  res.status(statusCode).json({ ...err });
 };

@@ -6,7 +6,10 @@ export const verifyHash = async (password: string, hash: string): Promise<boolea
   new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, (err: any, result: string) => {
       if (result) resolve(true);
-      resolve(false);
+      else reject({
+        name: 'FailAuth',
+        message: 'Invalid auth (bad username/password)'
+      })
     });
   });
 

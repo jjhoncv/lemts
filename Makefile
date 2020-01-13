@@ -47,6 +47,20 @@ start: ## Up the docker containers, use me with: make start
 	export GID="$(shell id -g)" && \
 		docker-compose up -d
 
+migration:
+	$(call detect_user)
+	docker run \
+		-it \
+		--rm \
+		--workdir /${WORKDIR} \
+		-u ${USERID}:${USERID} \
+		-v ${PWD}/$(PASSWORD_FILE):/etc/$(PASSWORD_FILE):ro \
+		--network lemts_default \
+		-v ${PWD}/${APP_DIR}:/${WORKDIR} \
+		${IMAGE_NODE} \
+		npm run migration
+	rm -rf $(PWD)/$(PASSWORD_FILE)
+
 stop: ## Stop the docker containers, use me with: make stop
 	export IMAGE_NODE="$(IMAGE_NODE)" && \
 		docker-compose stop

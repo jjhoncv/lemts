@@ -1,47 +1,54 @@
-import { Entity, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, ManyToMany, JoinTable } from "typeorm";
-import { Role } from './role.entity'
-import { Section } from './section.entity'
-
+import {
+  Entity,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+  ManyToMany,
+  JoinTable
+} from "typeorm";
+import { Role } from "./role.entity";
+import { Section } from "./section.entity";
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column({ length: 30 })
+  name: string;
 
-    @Column()
-    name: string;
+  @Column({ length: 30 })
+  surname: string;
 
-    @Column()
-    surname: string;
+  @Column({ length: 40 })
+  email: string;
 
-    @Column()
-    email: string;
+  @Column({ length: 30 })
+  @Unique(["username"])
+  username: string;
 
-    @Column()
-    @Unique(['username'])
-    username: string;
+  @Column({ length: 60 })
+  password: string;
 
-    @Column()
-    password: string;
+  @Column({ length: 70 })
+  photo: string;
 
-    @Column()
-    photo: string;
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  lastLogin: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    lastLogin: string;
+  @Column({ default: true })
+  reading: boolean;
 
-    @Column({ default: true })
-    reading: boolean;
+  @Column({ default: true })
+  writing: boolean;
 
-    @Column({ default: true })
-    writing: boolean;
+  @ManyToOne(type => Role)
+  @JoinColumn()
+  role: Role;
 
-    @ManyToOne(type => Role)
-    @JoinColumn()
-    role: Role;
-
-    @ManyToMany(type => Section)
-    @JoinTable()
-    sections: Section[];
+  @ManyToMany(type => Section)
+  @JoinTable()
+  sections: Section[];
 }

@@ -3,55 +3,43 @@ import { User } from "./../entity/user.entity";
 import { Role } from "./../entity/role.entity";
 
 import { verifyHash, generateHash } from "./../utils/encryptions";
-import { ErrorHandler } from "../../../errors/handleError";
+import { ObjectNotFoundException, FailAuthException } from "../exceptions";
 
 export const createUser = async params => {
   let roleRepository = getRepository(Role);
-  let role = await roleRepository.findOne({ id: params.role });
-
-  if (!role) {
-    throw new ErrorHandler(404, "role not exists");
-  }
+  let role = await roleRepository
+    .findOneOrFail({ id: params.role })
+    .catch(ObjectNotFoundException);
 
   let user = new User();
   user = { ...params };
   user.password = await generateHash(params.password, 10);
   user.role = role;
 
-  await getRepository(User).save(user);
+  await getRepository(User)
+    .save(user)
+    .catch(ObjectNotFoundException);
   return user;
 };
 
 export const loginUser = async ({ username, password }) => {
-  const user = await getRepository(User).findOneOrFail({ username });
-  if (!user) {
-    throw new ErrorHandler(404, "user not exists");
-  }
+  const userRepository = getRepository(User);
+  const user = await userRepository
+    .findOneOrFail({ username })
+    .catch(ObjectNotFoundException);
 
-  if (await verifyHash(password, user.password)) {
-    user.lastLogin = new Date().getTime().toString();
-    await getRepository(User).save(user);
-  } else {
-    throw new ErrorHandler(404, 'password verification failed');
-  }
+  await verifyHash(password, user.password).catch(FailAuthException);
   return user;
 };
 
 export const changePassword = async (userId, { oldPassword, newPassword }) => {
-  if (!(oldPassword && newPassword)) {
-    throw new ErrorHandler(400, "fields send empty");
-  }
+  const userRepository = getRepository(User);
 
-  const user = await getRepository(User).findOne({ id: userId });
-  if (!user) {
-    throw new ErrorHandler(404, "user not exists");
-  }
+  const user = await userRepository
+    .findOneOrFail({ id: userId })
+    .catch(ObjectNotFoundException);
 
-  const isVerifyHash = await verifyHash(oldPassword, user.password);
-
-  if (!isVerifyHash) {
-    throw new ErrorHandler(404, "password not is valid");
-  }
-
+  await verifyHash(oldPassword, user.password).catch(FailAuthException);
   user.password = await generateHash(newPassword, 10);
+  userRepository.save(user).catch(ObjectNotFoundException);
 };
