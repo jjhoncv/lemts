@@ -1,31 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import * as jwt from "jsonwebtoken";
-import { jwtSecret, jwtExpires } from "../../../config";
+import {
+  generateJwt,
+  verifyJwt
+} from "../../../components/user/utils/jsonwebtoken";
+import { JwtErrorException } from "../exceptions";
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-  //Get the jwt token from the head
-  const token = <string>req.headers["auth"];
-  let jwtPayload;
+export const checkJwt = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const auth = req.header("Authorization");
+  const token = auth && auth.replace("Bearer ", "");
 
-  //Try to validate the token and get data
-  try {
-    jwtPayload = <any>jwt.verify(token, jwtSecret);
-    res.locals.jwtPayload = jwtPayload;
-  } catch (error) {
-    //If token is not valid, respond with 401 (unauthorized)
-    res.status(401).send('fail jwt verify');
-    return;
-  }
+  const jwtPayload = await verifyJwt(token).catch(next);
 
-  //The token is valid for 1 hour
-  //We want to send a new token on every request
-  const { userId, username } = jwtPayload;
-  const newToken = jwt.sign({ userId, username }, jwtSecret, {
-    expiresIn: jwtExpires
-  });
+  res.locals.jwtPayload = jwtPayload;
+
+  const { id, username } = <any>jwtPayload;
+  const newToken = generateJwt({ id, username });
 
   res.setHeader("token", newToken);
 
-  //Call the next middleware or controller
   next();
 };

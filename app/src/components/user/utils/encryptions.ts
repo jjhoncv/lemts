@@ -1,30 +1,24 @@
-import * as bcrypt from "bcrypt"
-import * as jwt from "jsonwebtoken";
-import { jwtSecret, jwtExpires } from "../../../config";
+import { compare, hash } from "bcrypt";
 
-export const verifyHash = async (password: string, hash: string): Promise<boolean> =>
+export const verifyHash = async (password: string, hash: string) =>
   new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash, (err: any, result: string) => {
+    compare(password, hash, (err: any, result: any) => {
       if (result) resolve(true);
-      else reject({
-        name: 'FailAuth',
-        message: 'Invalid auth (bad username/password)'
-      })
+      else {
+        const error = new Error();
+        error.name = "FailVerifyHash";
+        error.message = "Fail verification password";
+        reject(error);
+      }
     });
   });
 
-export const generateJWT = (user) => {
-  const token = jwt.sign(
-    { userId: user.id, username: user.name },
-    jwtSecret,
-    { expiresIn: jwtExpires }
-  );
-  return token;
-}
-
-export const generateHash = async (password: string, saltRounds: number): Promise<string> =>
+export const generateHash = async (
+  password: string,
+  saltRounds: number
+): Promise<string> =>
   new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err: any, hash: string) => {
+    hash(password, saltRounds, (err: any, hash: string) => {
       if (err) reject(err);
       resolve(hash);
     });

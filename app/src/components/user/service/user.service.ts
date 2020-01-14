@@ -32,14 +32,15 @@ export const loginUser = async ({ username, password }) => {
   return user;
 };
 
-export const changePassword = async (userId, { oldPassword, newPassword }) => {
+export const changePassword = async (id, { oldPassword, newPassword }) => {
   const userRepository = getRepository(User);
 
   const user = await userRepository
-    .findOneOrFail({ id: userId })
+    .findOneOrFail({ id })
     .catch(ObjectNotFoundException);
 
   await verifyHash(oldPassword, user.password).catch(FailAuthException);
+
   user.password = await generateHash(newPassword, 10);
   userRepository.save(user).catch(ObjectNotFoundException);
 };

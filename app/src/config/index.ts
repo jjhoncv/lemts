@@ -1,2 +1,4 @@
-export const jwtSecret = "@QEGTUI";
-export const jwtExpires = "2h";
+export const jwt = {
+  secret: "@QEGTUI",
+  expiresIn: "2h"
+};
