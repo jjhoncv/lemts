@@ -1,30 +1,41 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import * as userService from "../service/user.service";
 import { generateJwt } from "../utils/jsonwebtoken";
-import { IResponse } from "../interface";
 
 export class userController {
-  static register = async (req: Request, res: IResponse) => {
+  static register = async (req: Request, res: Response) => {
     const params = req.body;
     const { id, username } = await userService.createUser(params);
     const token = generateJwt({ id, username });
-    res.data = { token };
-    res.status(200);
+
+    res.status(201).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: { token }
+    });
   };
 
-  static login = async (req: Request, res: IResponse) => {
+  static login = async (req: Request, res: Response) => {
     const params = req.body;
     const { id, username } = await userService.loginUser(params);
     const token = generateJwt({ id, username });
-    res.data = { token };
-    res.status(200);
+
+    res.status(200).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: { token }
+    });
   };
 
-  static changePassword = async (req: Request, res: IResponse) => {
+  static changePassword = async (req: Request, res: Response) => {
     const params = req.body;
     const { id } = res.locals.jwtPayload;
     await userService.changePassword(id, params);
-    res.message = "password changed";
-    res.status(200);
+
+    res.status(200).json({
+      status: "success",
+      statusCode: res.statusCode,
+      message: "password was changed"
+    });
   };
 }

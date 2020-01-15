@@ -13,7 +13,7 @@ export const checkJwt = async (
   const auth = req.header("Authorization");
   const token = auth && auth.replace("Bearer ", "");
 
-  const jwtPayload = await verifyJwt(token).catch(next);
+  const jwtPayload = await verifyJwt(token).catch(JwtErrorException);
 
   res.locals.jwtPayload = jwtPayload;
 

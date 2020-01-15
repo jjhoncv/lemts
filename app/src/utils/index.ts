@@ -10,12 +10,13 @@ const hydrateResponse = (res: IResponse) => ({
 });
 
 export const asyncHandler = fn => (req, res: any, next) => {
-  Promise.resolve(fn(req, res, next))
-    .then(() => {
-      const response = hydrateResponse(res);
-      res.json({ ...response });
-    })
-    .catch(next);
+  return Promise.resolve(fn(req, res, next)).catch(next);
+  // Promise.resolve(fn(req, res, next))
+  //   .then(() => {
+  //     const response = hydrateResponse(res);
+  //     res.json({ ...response });
+  //   })
+  //   .catch(next);
 };
 
 // can be reused by many routes

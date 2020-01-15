@@ -23,7 +23,7 @@ router.post(
 // Change my password
 router.post(
   "/change-password",
-  [checkJwt, checkChangePassword],
+  [checkChangePassword, asyncHandler(checkJwt)],
   asyncHandler(userController.changePassword)
 );
 
