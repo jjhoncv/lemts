@@ -17,7 +17,7 @@ export const checkJwt = async (
 
   res.locals.jwtPayload = jwtPayload;
 
-  const { id, username } = <any>jwtPayload;
+  const { id, username } = jwtPayload;
   const newToken = generateJwt({ id, username });
 
   res.setHeader("token", newToken);

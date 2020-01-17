@@ -1,22 +1,9 @@
 import { IResponse } from "../components/user/interface";
 import { validationResult } from "express-validator";
-import { ErrorHandler } from "../errors/handleError";
-
-const hydrateResponse = (res: IResponse) => ({
-  status: res.statusCode === 200 ? "success" : "",
-  statusCode: res.statusCode,
-  data: res.data,
-  message: res.message
-});
+import { ErrorHandler } from "./../type/index";
 
 export const asyncHandler = fn => (req, res: any, next) => {
   return Promise.resolve(fn(req, res, next)).catch(next);
-  // Promise.resolve(fn(req, res, next))
-  //   .then(() => {
-  //     const response = hydrateResponse(res);
-  //     res.json({ ...response });
-  //   })
-  //   .catch(next);
 };
 
 // can be reused by many routes
@@ -37,4 +24,27 @@ export const validate = validations => async (req, res, next) => {
   }
 
   next(failMsg);
+};
+
+
+// import { Response } from "express";
+
+export class ErrorHandler extends Error {
+  public statusCode: number;
+  public data: object;
+  public msg: string;
+  public status: string;
+
+  constructor(statusCode: number, arg: { msg?: any; data?: any }) {
+    super();
+    this.status = "error";
+    this.statusCode = statusCode;
+    this.msg = arg.msg;
+    this.data = arg.data;
+  }
+}
+
+export const handleError = (err: IError, req, res: Response, next) => {
+  const { statusCode } = err;
+  res.status(statusCode).json({ ...err });
 };

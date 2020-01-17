@@ -1,5 +1,4 @@
 import { body } from "express-validator";
-
 import { validate } from "../../../utils";
 
 export const checkChangePassword = validate([

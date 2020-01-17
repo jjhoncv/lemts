@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as userService from "../service/user.service";
-import { generateJwt } from "../utils/jsonwebtoken";
+import * as userService from "./service/user.service";
+import { generateJwt } from "./utils/jsonwebtoken";
 
 export class userController {
   static register = async (req: Request, res: Response) => {
