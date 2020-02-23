@@ -1,9 +1,9 @@
 import { getRepository } from "typeorm";
-import { User } from "./../entity/user.entity";
-import { Role } from "./../entity/role.entity";
+import { User } from "./userEntity";
+import { Role } from "./roleEntity";
 
-import { verifyHash, generateHash } from "./../utils/encryptions";
-import { ObjectNotFoundException, FailAuthException } from "../exceptions";
+import { verifyHash, generateHash } from "./userUtil";
+import { ObjectNotFoundException, FailAuthException } from "./userException";
 
 export const createUser = async params => {
   let roleRepository = getRepository(Role);
@@ -24,6 +24,7 @@ export const createUser = async params => {
 
 export const loginUser = async ({ username, password }) => {
   const userRepository = getRepository(User);
+  console.log(username, password);
   const user = await userRepository
     .findOneOrFail({ username })
     .catch(ObjectNotFoundException);

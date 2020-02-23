@@ -4,8 +4,8 @@ import { default as cors } from "cors";
 import { router } from "./routes";
 import { handleError } from "./errors/handleError";
 import { application } from "./config/application";
-var swaggerUi = require("swagger-ui-express"),
-  swaggerDocument = require("./swagger.json");
+// var swaggerUi = require("swagger-ui-express"),
+//   swaggerDocument = require("./swagger.json");
 
 const app: express.Application = express();
 
@@ -16,6 +16,6 @@ export const init = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(application.url.base, router);
   app.use(handleError);
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.listen(8080);
 };

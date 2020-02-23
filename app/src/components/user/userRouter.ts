@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { userController } from "./controller";
+import { userController } from "./userController";
 import { asyncHandler } from "../../utils";
+import { checkJwt } from "./userMiddelware";
+
 import {
   checkChangePassword,
   checkRegister,
-  checkJwt,
   checkLogin
-} from "./middelware";
+} from "./userValidation";
 
 const router: Router = Router();
 

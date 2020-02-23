@@ -8,7 +8,7 @@ module.exports = {
   driver: 'mysql',
   synchronize: process.env.NODE_ENV !== 'production',
   entities: [
-    '**/**.entity.ts'
+    '**/**Entity.ts'
     // '**/**.entity.js'
   ],
   logging: process.env.NODE_ENV !== 'production' ? 'all' : 'error',

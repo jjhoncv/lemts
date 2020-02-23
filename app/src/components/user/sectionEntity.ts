@@ -6,7 +6,7 @@ import {
   JoinColumn
 } from "typeorm";
 
-import { Module } from "./module.entity";
+import { Module } from "./moduleEntity";
 
 @Entity()
 export class Section {

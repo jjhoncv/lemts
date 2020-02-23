@@ -1,4 +1,7 @@
 import { compare, hash } from "bcrypt";
+import { sign, verify } from "jsonwebtoken";
+import { jwt } from "./../../config";
+import { Payload } from "./userType";
 
 export const verifyHash = async (password: string, hash: string) =>
   new Promise((resolve, reject) => {
@@ -24,10 +27,6 @@ export const generateHash = async (
     });
   });
 
-import { sign, verify } from "jsonwebtoken";
-import { jwt } from "../../../config";
-import { Payload } from "../interface";
-
 export const generateJwt = payload =>
   sign(payload, jwt.secret, { expiresIn: jwt.expiresIn });
 
@@ -40,26 +39,3 @@ export const verifyJwt = token =>
       reject(err);
     }
   });
-
-
-  import { Response } from "express";
-
-export class ErrorHandler extends Error {
-  public statusCode: number;
-  public data: object;
-  public msg: string;
-  public status: string;
-
-  constructor(statusCode: number, arg: { msg?: any; data?: any }) {
-    super();
-    this.status = "error";
-    this.statusCode = statusCode;
-    this.msg = arg.msg;
-    this.data = arg.data;
-  }
-}
-
-export const handleError = (err: IError, req, res: Response, next) => {
-  const { statusCode } = err;
-  res.status(statusCode).json({ ...err });
-};

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  generateJwt,
-  verifyJwt
-} from "../../../components/user/utils/jsonwebtoken";
-import { JwtErrorException } from "../exceptions";
+import { generateJwt, verifyJwt } from "./userUtil";
+import { JwtErrorException } from "./userException";
+import { getRepository } from "typeorm";
+import { User } from "./userEntity";
+import { Role } from "./roleEntity";
 
 export const checkJwt = async (
   req: Request,
@@ -25,14 +25,6 @@ export const checkJwt = async (
   next();
 };
 
-
-
-import { Request, Response, NextFunction } from "express";
-import { User } from "../entity/user.entity";
-import { getRepository } from 'typeorm';
-import { Role } from "../entity/role.entity";
-
-
 export const checkRole = (roles: Array<string>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     //Get the user ID from previous midleware
@@ -44,7 +36,7 @@ export const checkRole = (roles: Array<string>) => {
       res.status(401).send();
     }
 
-    let role = await getRepository(Role).findOne(user.role)
+    let role = await getRepository(Role).findOne(user.role);
 
     //Check if array of authorized roles includes the user's role
     if (roles.indexOf(role.name) > -1) next();

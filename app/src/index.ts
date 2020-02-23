@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { FailMySQLConnectionException } from "./components/user/exceptions";
+import { FailMySQLConnectionException } from "./exception";
 import { init } from "./app";
 
 createConnection()
