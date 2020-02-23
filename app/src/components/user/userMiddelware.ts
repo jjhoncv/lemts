@@ -3,7 +3,7 @@ import { generateJwt, verifyJwt } from "./userUtil";
 import { JwtErrorException } from "./userException";
 import { getRepository } from "typeorm";
 import { User } from "./userEntity";
-import { Role } from "./roleEntity";
+import { Role } from "./../role/roleEntity";
 
 export const checkJwt = async (
   req: Request,

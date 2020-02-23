@@ -3,3 +3,5 @@ node_modules
 .config
 .npm
 docker/dev/mysql/data/*
+combined.log
+error.log

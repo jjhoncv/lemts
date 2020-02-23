@@ -8,8 +8,8 @@ import {
     ManyToMany,
     JoinTable
   } from "typeorm";
-  import { Role } from "./roleEntity";
-  import { Section } from "./sectionEntity";
+  import { Role } from "./../role/roleEntity";
+  import { Section } from "./../section/sectionEntity";
 
   @Entity()
   export class User {

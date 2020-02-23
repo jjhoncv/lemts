@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 import { User } from "./userEntity";
-import { Role } from "./roleEntity";
+import { Role } from "./../role/roleEntity";
 
 import { verifyHash, generateHash } from "./userUtil";
 import { ObjectNotFoundException, FailAuthException } from "./userException";

@@ -1,9 +1,9 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { Module } from "../src/components/user/moduleEntity";
-import { Role } from "../src/components/user/roleEntity";
+import { Module } from "../src/components/module/moduleEntity";
+import { Role } from "../src/components/role/roleEntity";
 import { User } from "../src/components/user/userEntity";
 import { generateHash } from "../src/components/user/userUtil";
-import { Section } from "../src/components/user/sectionEntity";
+import { Section } from "../src/components/section/sectionEntity";
 
 export class modules1578869381561 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
