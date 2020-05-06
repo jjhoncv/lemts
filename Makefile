@@ -2,7 +2,8 @@
 APP_DIR         = app
 FILES_CONFIG    = ".env"
 PASSWORD_FILE   = passwd
-IMAGE_NODE		  = node:12-slim
+IMAGE_NODE		= node:12-slim
+IMAGE_DEV       = node:lemts
 
 ENV             ?= dev
 STAGE           ?= ${ENV}
@@ -23,6 +24,14 @@ define detect_user
 	$(shell rm -rf $(PWD)/$(PASSWORD_FILE).tmpl)
 endef
 
+build.image:
+	docker build \
+		-f docker/dev/node/Dockerfile \
+		--no-cache \
+		--build-arg IMAGE=${IMAGE_NODE} \
+		-t $(IMAGE_DEV) \
+		docker/dev/node/ \
+
 npm.install: ## Instalar depedencias npm: make npm.install
 	$(call detect_user)
 	docker run \
@@ -33,16 +42,16 @@ npm.install: ## Instalar depedencias npm: make npm.install
 		-v ${PWD}/$(PASSWORD_FILE):/etc/$(PASSWORD_FILE):ro \
 		-v ${PWD}/${APP_DIR}:/${WORKDIR} \
 		--tty=false \
-		${IMAGE_NODE} \
+		${IMAGE_DEV} \
 		npm install ${NPM_FLAGS}
 	rm -rf $(PWD)/$(PASSWORD_FILE)
 
 logs: ## View logs docker containers, use me with: make logs
-	export IMAGE_NODE="$(IMAGE_NODE)" && \
+	export IMAGE_NODE="$(IMAGE_DEV)" && \
 		docker-compose logs -f
 
 start: ## Up the docker containers, use me with: make start
-	export IMAGE_NODE="$(IMAGE_NODE)" && \
+	export IMAGE_NODE="$(IMAGE_DEV)" && \
 	export UID="$(shell id -u)" && \
 	export GID="$(shell id -g)" && \
 		docker-compose up -d
@@ -57,12 +66,12 @@ migration:
 		-v ${PWD}/$(PASSWORD_FILE):/etc/$(PASSWORD_FILE):ro \
 		--network lemts_default \
 		-v ${PWD}/${APP_DIR}:/${WORKDIR} \
-		${IMAGE_NODE} \
+		${IMAGE_DEV} \
 		npm run migration
 	rm -rf $(PWD)/$(PASSWORD_FILE)
 
 stop: ## Stop the docker containers, use me with: make stop
-	export IMAGE_NODE="$(IMAGE_NODE)" && \
+	export IMAGE_NODE="$(IMAGE_DEV)" && \
 		docker-compose stop
 
 help:

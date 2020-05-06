@@ -17,6 +17,9 @@ To install run this command:
 make install
 ```
 
+** add permises own to folder
+docker/dev/mysql/data
+
 Usage
 -----
 
