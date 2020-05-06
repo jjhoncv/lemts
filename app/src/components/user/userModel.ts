@@ -1,3 +1,5 @@
+import { Role } from "../role/roleModel";
+
 export class User {
   public id: number;
   public name: string;
@@ -6,8 +8,10 @@ export class User {
   public password: string;
   public email: string;
   public photo: string;
+  public role: Role;
+  public reading: boolean;
+  public writing: boolean;
+  public lastLogin: string;
 
-  constructor() {
-
-  }
+  constructor() {}
 }

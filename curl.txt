@@ -2,7 +2,7 @@ login
 curl -d '{"username":"jjhoncv", "password":"123456"}' -H "Content-Type: application/json" -X POST http://localhost/api/user/login
 
 register
-curl -d '{"username":"jjhoncv", "password":"123456", "name":"jhonnatan", "surname":"castro", "email":"jjhoncv@gmail.com", "photo":"a.jpg", "role": "1"}' -H "Content-Type: application/json" -X POST http://localhost/user/auth/register
+curl -d '{"username":"jjhoncv", "password":"123456", "name":"jhonnatan", "surname":"castro", "email":"jjhoncv@gmail.com", "photo":"a.jpg", "role": "1"}' -H "Content-Type: application/json" -X POST http://localhost/api/user/register
 
 token auth es sin %
 

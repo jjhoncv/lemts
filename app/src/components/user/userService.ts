@@ -1,14 +1,16 @@
 import { getRepository } from "typeorm";
-import { User } from "./userEntity";
-import { Role } from "./../role/roleEntity";
+import { User } from "./userModel";
 
 import { verifyHash, generateHash } from "./userUtil";
 import { ObjectNotFoundException, FailAuthException } from "./userException";
+import { UserRepository } from "./userRepository";
+import { RoleRepository } from "./../role/roleRepository";
 
-export const createUser = async params => {
-  let roleRepository = getRepository(Role);
-  let role = await roleRepository
-    .findOneOrFail({ id: params.role })
+export const createUser = async (params) => {
+  const roleRepository = new RoleRepository();
+
+  const role = await roleRepository
+    .findOneOrFail({ field: "id", value: params.role })
     .catch(ObjectNotFoundException);
 
   let user = new User();
@@ -16,17 +18,16 @@ export const createUser = async params => {
   user.password = await generateHash(params.password, 10);
   user.role = role;
 
-  await getRepository(User)
-    .save(user)
-    .catch(ObjectNotFoundException);
+  const userRepository = new UserRepository();
+  await userRepository.create(user).catch(ObjectNotFoundException);
+
   return user;
 };
 
 export const loginUser = async ({ username, password }) => {
-  const userRepository = getRepository(User);
-  console.log(username, password);
+  const userRepository = new UserRepository();
   const user = await userRepository
-    .findOneOrFail({ username })
+    .findOneOrFail({ field: "username", value: username })
     .catch(ObjectNotFoundException);
 
   await verifyHash(password, user.password).catch(FailAuthException);

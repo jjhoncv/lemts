@@ -1,9 +1,8 @@
-import { connectionMySql } from "../connection/ConnectionMySql";
-import { QueryFunction } from "mysql";
+import { ConnectionMySql, PromisifiedPool } from "../connection/ConnectionMySql";
 
-export class Repository {
-  public query: QueryFunction | Function;
+export class Repository extends ConnectionMySql {
+  public pool: PromisifiedPool;
   constructor() {
-    this.query = connectionMySql.query;
+    super();
   }
 }

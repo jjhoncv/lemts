@@ -5,6 +5,7 @@ import { Payload } from "./userType";
 
 export const verifyHash = async (password: string, hash: string) =>
   new Promise((resolve, reject) => {
+    console.log(password, hash);
     compare(password, hash, (err: any, result: any) => {
       if (result) resolve(true);
       else {
@@ -27,10 +28,10 @@ export const generateHash = async (
     });
   });
 
-export const generateJwt = payload =>
+export const generateJwt = (payload) =>
   sign(payload, jwt.secret, { expiresIn: jwt.expiresIn });
 
-export const verifyJwt = token =>
+export const verifyJwt = (token) =>
   new Promise<Payload>((resolve, reject) => {
     try {
       const payload = <Payload>verify(token, jwt.secret);
