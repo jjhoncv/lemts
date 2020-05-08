@@ -32,6 +32,10 @@ build.image:
 		-t $(IMAGE_DEV) \
 		docker/dev/node/ \
 
+permissions:
+	$(eval WHOAMI := $(shell whoami))
+	sudo chown ${WHOAMI}:${WHOAMI} docker/dev/mysql/data
+
 npm.install: ## Instalar depedencias npm: make npm.install
 	$(call detect_user)
 	docker run \

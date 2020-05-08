@@ -10,13 +10,13 @@ export class ConnectionMySql {
   public pool: PromisifiedPool;
 
   constructor() {
-    const pool = createPool({
+    this.pool = createPool({
       host: database.host,
       user: database.username,
       password: database.password,
       database: database.database,
     });
 
-    this.pool.query = promisify(pool.query);
+    this.pool.query = promisify(this.pool.query);
   }
 }
