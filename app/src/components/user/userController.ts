@@ -11,7 +11,7 @@ export class userController {
     res.status(200).json({
       status: "success",
       statusCode: res.statusCode,
-      data: { token },
+      data: { token }
     });
   };
 
@@ -23,7 +23,7 @@ export class userController {
     res.status(200).json({
       status: "success",
       statusCode: res.statusCode,
-      message: "password was changed",
+      message: "password was changed"
     });
   };
 
@@ -37,7 +37,7 @@ export class userController {
     res.status(201).json({
       status: "success",
       statusCode: res.statusCode,
-      data: { token },
+      data: { token }
     });
   };
 
@@ -47,7 +47,31 @@ export class userController {
     res.status(200).json({
       status: "success",
       statusCode: res.statusCode,
-      data: users,
+      data: users
+    });
+  };
+
+  static me = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const user = await userService.getUser(id);
+
+    res.status(200).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: user
+    });
+  };
+
+  static update = async (req: Request, res: Response) => {
+    const params = req.body;
+    const idp = parseInt(req.params.id);
+    const { id, username } = await userService.updateUser(params, idp);
+    const token = generateJwt({ id, username });
+
+    res.status(200).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: { token }
     });
   };
 }

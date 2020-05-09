@@ -6,7 +6,7 @@ import { checkJwt, checkRole } from "./userMiddelware";
 import {
   checkChangePassword,
   checkRegister,
-  checkLogin,
+  checkLogin
 } from "./userValidation";
 
 const router: Router = Router();
@@ -28,5 +28,12 @@ router.post("/add", [checkRegister], asyncHandler(userController.add));
 
 // User list
 router.get("/", asyncHandler(userController.list));
+
+// User me
+router.get("/:id", asyncHandler(userController.me));
+
+// User me update
+router.post("/:id", asyncHandler(userController.update));
+
 
 export const userRouter: Router = router;
