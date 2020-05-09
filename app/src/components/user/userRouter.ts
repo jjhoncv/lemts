@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { userController } from "./userController";
 import { asyncHandler } from "../../utils";
-import { checkJwt } from "./userMiddelware";
+import { checkJwt, checkRole } from "./userMiddelware";
 
 import {
   checkChangePassword,
   checkRegister,
-  checkLogin
+  checkLogin,
 } from "./userValidation";
 
 const router: Router = Router();
@@ -14,18 +14,19 @@ const router: Router = Router();
 // Login route
 router.post("/login", [checkLogin], asyncHandler(userController.login));
 
-// Register route
-router.post(
-  "/register",
-  [checkRegister],
-  asyncHandler(userController.register)
-);
-
 // Change my password
 router.post(
   "/change-password",
   [checkChangePassword, asyncHandler(checkJwt)],
   asyncHandler(userController.changePassword)
 );
+
+// CRUD
+
+// User add
+router.post("/add", [checkRegister], asyncHandler(userController.add));
+
+// User list
+router.get("/", asyncHandler(userController.list));
 
 export const userRouter: Router = router;

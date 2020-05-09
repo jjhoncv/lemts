@@ -27,26 +27,6 @@ USE `lemts`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `migrations`
---
-
-CREATE TABLE `migrations` (
-  `id` int(11) NOT NULL,
-  `timestamp` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `migrations`
---
-
-INSERT INTO `migrations` (`id`, `timestamp`, `name`) VALUES
-(1, 1578864301053, 'test21578864301053'),
-(2, 1578867883224, 'modules1578867883224');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `module`
 --
 
@@ -114,8 +94,8 @@ INSERT INTO `section` (`id`, `name`, `url`, `status`, `moduleId`) VALUES
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `lastLogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `reading` tinyint(4) NOT NULL DEFAULT '1',
-  `writing` tinyint(4) NOT NULL DEFAULT '1',
+  `reading` tinyint(1) NOT NULL DEFAULT '1',
+  `writing` tinyint(1) NOT NULL DEFAULT '1',
   `roleId` int(11) DEFAULT NULL,
   `name` varchar(30) NOT NULL,
   `surname` varchar(30) NOT NULL,
@@ -136,19 +116,19 @@ INSERT INTO `user` (`id`, `lastLogin`, `reading`, `writing`, `roleId`, `name`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user_sections_section`
+-- Estructura de tabla para la tabla `user_section`
 --
 
-CREATE TABLE `user_sections_section` (
+CREATE TABLE `user_section` (
   `userId` int(11) NOT NULL,
   `sectionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `user_sections_section`
+-- Volcado de datos para la tabla `user_section`
 --
 
-INSERT INTO `user_sections_section` (`userId`, `sectionId`) VALUES
+INSERT INTO `user_section` (`userId`, `sectionId`) VALUES
 (2, 1),
 (2, 2),
 (4, 1);
@@ -156,12 +136,6 @@ INSERT INTO `user_sections_section` (`userId`, `sectionId`) VALUES
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `module`
@@ -191,9 +165,9 @@ ALTER TABLE `user`
   ADD KEY `FK_c28e52f758e7bbc53828db92194` (`roleId`);
 
 --
--- Indices de la tabla `user_sections_section`
+-- Indices de la tabla `user_section`
 --
-ALTER TABLE `user_sections_section`
+ALTER TABLE `user_section`
   ADD PRIMARY KEY (`userId`,`sectionId`),
   ADD KEY `IDX_99ac4bdb2cfe9f4f5c9667658f` (`userId`),
   ADD KEY `IDX_bcab46131ab9771e7555fe92e0` (`sectionId`);
@@ -201,12 +175,6 @@ ALTER TABLE `user_sections_section`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `module`
@@ -249,9 +217,9 @@ ALTER TABLE `user`
   ADD CONSTRAINT `FK_c28e52f758e7bbc53828db92194` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `user_sections_section`
+-- Filtros para la tabla `user_section`
 --
-ALTER TABLE `user_sections_section`
+ALTER TABLE `user_section`
   ADD CONSTRAINT `FK_99ac4bdb2cfe9f4f5c9667658f7` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_bcab46131ab9771e7555fe92e0d` FOREIGN KEY (`sectionId`) REFERENCES `section` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;

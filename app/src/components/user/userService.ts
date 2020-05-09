@@ -2,26 +2,27 @@ import { getRepository } from "typeorm";
 import { User } from "./userModel";
 
 import { verifyHash, generateHash } from "./userUtil";
-import { ObjectNotFoundException, FailAuthException } from "./userException";
+import { FailAuthException } from "./userException";
+import { ObjectNotFoundException } from "./../../exception";
 import { UserRepository } from "./userRepository";
-import { RoleRepository } from "./../role/roleRepository";
+import * as roleService from "./../role/roleService";
 
-export const createUser = async (params) => {
-  const roleRepository = new RoleRepository();
-
-  const role = await roleRepository
-    .findOneOrFail({ field: "id", value: params.role })
-    .catch(ObjectNotFoundException);
-
+export const addUser = async (params) => {
   let user = new User();
   user = { ...params };
   user.password = await generateHash(params.password, 10);
-  user.role = role;
+  user.role = await roleService.getRole(params.role);
 
   const userRepository = new UserRepository();
-  await userRepository.create(user).catch(ObjectNotFoundException);
+  await userRepository.add(user).catch(ObjectNotFoundException);
 
   return user;
+};
+
+export const listUser = async () => {
+  const userRepository = new UserRepository();
+  const users = await userRepository.list().catch(ObjectNotFoundException);
+  return users;
 };
 
 export const loginUser = async ({ username, password }) => {

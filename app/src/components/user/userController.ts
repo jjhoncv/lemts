@@ -3,18 +3,6 @@ import * as userService from "./userService";
 import { generateJwt } from "./userUtil";
 
 export class userController {
-  static register = async (req: Request, res: Response) => {
-    const params = req.body;
-    const { id, username } = await userService.createUser(params);
-    const token = generateJwt({ id, username });
-
-    res.status(201).json({
-      status: "success",
-      statusCode: res.statusCode,
-      data: { token }
-    });
-  };
-
   static login = async (req: Request, res: Response) => {
     const params = req.body;
     const { id, username } = await userService.loginUser(params);
@@ -23,7 +11,7 @@ export class userController {
     res.status(200).json({
       status: "success",
       statusCode: res.statusCode,
-      data: { token }
+      data: { token },
     });
   };
 
@@ -35,7 +23,31 @@ export class userController {
     res.status(200).json({
       status: "success",
       statusCode: res.statusCode,
-      message: "password was changed"
+      message: "password was changed",
+    });
+  };
+
+  // crud
+
+  static add = async (req: Request, res: Response) => {
+    const params = req.body;
+    const { id, username } = await userService.addUser(params);
+    const token = generateJwt({ id, username });
+
+    res.status(201).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: { token },
+    });
+  };
+
+  static list = async (req: Request, res: Response) => {
+    const users = await userService.listUser();
+
+    res.status(200).json({
+      status: "success",
+      statusCode: res.statusCode,
+      data: users,
     });
   };
 }
