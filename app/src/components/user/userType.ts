@@ -1,6 +1,23 @@
+import { Role } from "../role/roleModel";
+
 export interface Payload {
   id: number;
   username: string;
+}
+
+export interface User {
+  id: any;
+  name: string;
+  surname: string;
+  username: string;
+  password?: string;
+  email: string;
+  photo: string;
+  role?: Role;
+  reading?: boolean;
+  writing?: boolean;
+  lastLogin?: string;
+  sections?: any[];
 }
 
 export interface UserDAO {

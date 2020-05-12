@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { generateJwt, verifyJwt } from "./userUtil";
 import { JwtErrorException } from "./userException";
-import { getRepository } from "typeorm";
-import { User } from "./userEntity";
-import { Role } from "./../role/roleEntity";
+import { UserRepository } from "./userRepository";
+import { User } from "./userType";
 
 export const checkJwt = async (
   req: Request,
@@ -30,16 +29,17 @@ export const checkRole = (roles: Array<string>) => {
     //Get the user ID from previous midleware
     const id = res.locals.jwtPayload.userId;
     let user: User;
+
+    const userRepository = new UserRepository();
+
     try {
-      user = await getRepository(User).findOne(id);
+      user = await userRepository.get(id);
     } catch (id) {
       res.status(401).send();
     }
 
-    let role = await getRepository(Role).findOne(user.role);
-
     //Check if array of authorized roles includes the user's role
-    if (roles.indexOf(role.name) > -1) next();
+    if (roles.indexOf(user.role.name) > -1) next();
     else res.status(401).send();
   };
 };

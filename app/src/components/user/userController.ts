@@ -63,9 +63,10 @@ export class userController {
   };
 
   static update = async (req: Request, res: Response) => {
-    const params = req.body;
-    const idp = parseInt(req.params.id);
-    const { id, username } = await userService.updateUser(params, idp);
+    let params = req.body;
+    params.id = parseInt(req.params.id)
+    // const idp = parseInt(req.params.id);
+    const { id, username } = await userService.updateUser(params);
     const token = generateJwt({ id, username });
 
     res.status(200).json({

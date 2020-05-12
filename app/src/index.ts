@@ -1,3 +1,8 @@
-import { init } from "./app";
+import { App } from "./app";
 
-init();
+async function main() {
+  const app = new App();
+  app.listen();
+}
+
+main();
