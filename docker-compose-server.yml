@@ -14,7 +14,7 @@ services:
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_CONNECTION_LIMIT=$MYSQL_CONNECTION_LIMIT
     volumes:
-      - ./app:/app
+      - ./app/server:/app
     depends_on:
       - db
     ports:
